@@ -20,6 +20,9 @@ const PORT = process.env.PORT
 // How to connect to the database either via heroku or locally
 const MONGODB_URI = process.env.MONGODB_URI;
 
+// APIKEY 
+const APIKEY = process.env.APIKEY
+
 // Connect to Mongo &
 // Fix Depreciation Warnings from Mongoose
 // May or may not need these depending on your Mongoose version
@@ -95,7 +98,7 @@ app.get('/clothes/:id' , (req, res) => {
     url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/categories/list',
     params: {lang: 'en', country: 'us'},
     headers: {
-      'X-RapidAPI-Key': '18198b9e6fmsh35966d93fe90053p1badeejsn680060b71161',
+      'X-RapidAPI-Key': APIKEY,
       'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
     }
   };
