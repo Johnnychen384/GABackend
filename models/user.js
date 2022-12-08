@@ -6,7 +6,11 @@ const userSchema = new mongoose.Schema({
     name: String,
     password: String,
     gender: String,
-    preference: {type: String},
+    preference: {
+        clothing: {type: String},
+        color: {type: String},
+        price: {type: String}
+    },
     cart: [Clothes.schema]
 })
 

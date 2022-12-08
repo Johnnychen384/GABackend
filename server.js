@@ -58,9 +58,11 @@ app.post('/', (req, res) => {
 })
 
 
-// not done need form data to pass in. Also will need to change user.prefernce.
+// updates user preference with quiz data.
 app.put('/quiz/:id', (req, res) => {
-  User.findByIdAndUpdate(req.params.id, )
+  User.findByIdAndUpdate(req.params.id, { preference: req.body }, {new: true}, (error, data) => {
+    res.json(data)
+  })
 })
 
 // login route
@@ -85,7 +87,12 @@ app.post('/login', (req, res) => {
 })
 
 
-
+// Test route for postman to see all data
+app.get('/', (req, res) => {
+  User.find({}, (error, data) => {
+    res.json(data)
+  })
+})
 
 
 
