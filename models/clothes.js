@@ -14,4 +14,4 @@ const clothingSchema = new mongoose.Schema ({
 
 
 const Clothes = mongoose.model('Cloth', clothingSchema)
-// module.exports = Clothes 
+module.exports = Clothes 

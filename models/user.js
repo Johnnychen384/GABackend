@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
     name: String,
     password: String,
     gender: String,
-    preference: [String],
-    cart: [Clothes.Schema]
+    preference: {type: String},
+    cart: [Clothes.schema]
 })
 
 const Users = mongoose.model('user', userSchema)
