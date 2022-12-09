@@ -4,6 +4,7 @@
 const express = require('express');
 const mongoose = require ('mongoose');
 const User = require('./models/user')
+const Clothes = require('./models/clothes')
 const axios = require('axios')
 const app = express ();
 const db = mongoose.connection;
@@ -94,13 +95,30 @@ app.get('/', (req, res) => {
   })
 })
 
+// add item to cart route
+app.post('/add/:user/:item', (req, res) => {
+  User.findOne({_id: req.params.user}, (error, userData) => {
+    Clothes.create(req.params.item, (error, newItem) => {
+      userData.cart.push(newItem)
+      userData.save((error, data) => {
+        res.json(data)
+      })
+    })
+  })
+})
 
 
-// not done but dashboard route
+// delete route
 app.delete('/delete/:user/:item', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
     userData.cart.id(req.params.item).remove()
     userData.save((error, newUser) => res.json(newUser))
+  })
+})
+
+app.put('/edit/:user/:item', (req, res) => {
+  User.findOne({_id: req.params.user}, (error, userData) => {
+    
   })
 })
 
