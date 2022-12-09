@@ -151,11 +151,9 @@ app.put('/edit/:user/:number/:name/:item', (req, res) => {
 
 
     } else if (count > numberOfItem){
-      // how many items we want to remove
-      let different = count - numberOfItem
       
       // loops through the temp array which contains only items with the same name
-      for(let i = different; i > 0; i--){
+      for(let i = temp.length - 1; i > numberOfItem - 1; i--){
         // removes each item from cart.
         cartArray.id(temp[i]._id).remove()
         // saves
