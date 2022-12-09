@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Clothes = require('./Clothes')
+const Clothes = require('./clothes')
 
 const userSchema = new mongoose.Schema({
     email: String,

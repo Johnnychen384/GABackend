@@ -6,6 +6,7 @@ const mongoose = require ('mongoose');
 const User = require('./models/user')
 const Clothes = require('./models/clothes')
 const axios = require('axios')
+const cors = require('cors')
 const app = express ();
 const db = mongoose.connection;
 require('dotenv').config()
@@ -23,6 +24,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // APIKEY 
 const APIKEY = process.env.APIKEY
+
 
 // Connect to Mongo &
 // Fix Depreciation Warnings from Mongoose
@@ -45,6 +47,7 @@ app.use(express.static('public'));
 
 app.use(express.json());// returns middleware that only parses JSON - may or may not need it depending on your project
 
+app.use(cors())
 
 //___________________
 // Routes
@@ -96,9 +99,9 @@ app.get('/', (req, res) => {
 })
 
 // add item to cart route
-app.post('/add/:user/:item', (req, res) => {
+app.post('/add/:user', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
-    Clothes.create(req.params.item, (error, newItem) => {
+    Clothes.create(req.body, (error, newItem) => {
       userData.cart.push(newItem)
       userData.save((error, data) => {
         res.json(data)
@@ -109,15 +112,15 @@ app.post('/add/:user/:item', (req, res) => {
 
 
 // delete route
-app.delete('/delete/:user/:item', (req, res) => {
+app.delete('/delete/:user/:id', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
-    userData.cart.id(req.params.item).remove()
+    userData.cart.id(req.params.id).remove()
     userData.save((error, newUser) => res.json(newUser))
   })
 })
 
 // route for when user in the cart changes from 1 of an item to two or more. User will pass a new object called item into the params which is from a state that holds all our preferred items. 
-app.put('/edit/:user/:number/:name/:item', (req, res) => {
+app.post('/edit/:user/:name/:number', (req, res) => {
   
   // numberOFItem is how many the user wants of that clothes.
   let numberOfItem = req.params.number
@@ -134,7 +137,7 @@ app.put('/edit/:user/:number/:name/:item', (req, res) => {
     // goes through the cart array and checks the name property of each object
     for(let elem of cartArray){
       // if name of object is equal to the item we want to increase/decrease increment count
-      if(elem[name] === nameOfItem){
+      if(elem.name === nameOfItem){
         count++
         temp.push(elem)
       }
@@ -142,24 +145,23 @@ app.put('/edit/:user/:number/:name/:item', (req, res) => {
 
     // if count which is how many of that clothes we have in the cart is less than the numberOfItem which represents how much of that clothes we want to have than add one more to the cart.
     if(count < numberOfItem){
-      Clothes.create(req.params.item, (error, newItem) => {
+      Clothes.create(req.body, (error, newItem) => {
         cartArray.push(newItem)
-        userData.save((error, data) => {
-          res.json(data)
-        })
+        userData.save((error, data) => res.json(data))
       })
 
 
     } else if (count > numberOfItem){
-      
+      let diff = count - numberOfItem
       // loops through the temp array which contains only items with the same name
-      for(let i = temp.length - 1; i > numberOfItem - 1; i--){
+      let toBeRemoved = temp.splice(0, diff)
+
+      for(let i = 0; i < toBeRemoved.length; i++){
         // removes each item from cart.
-        cartArray.id(temp[i]._id).remove()
+        cartArray.id(toBeRemoved[i]._id).remove()
         // saves
         userData.save((error, newUser) => res.json(newUser))
       }
-
 
     }
 
