@@ -97,24 +97,12 @@ app.get('/', (req, res) => {
 
 
 // not done but dashboard route
-app.get('/clothes/:id' , (req, res) => {
-  
-  // options var contains all information needed for axios request
-  const options = {
-    method: 'GET',
-    url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/categories/list',
-    params: {lang: 'en', country: 'us'},
-    headers: {
-      'X-RapidAPI-Key': APIKEY,
-      'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
-    }
-  };
-
-  // because options var contains the type of request already. We just need to use the .request instead.
-  axios.request(options)
-  .then(res => console.log(res.data), error => console.log(error))
-  .catch(error => console.log(error))
-});
+app.delete('/delete/:user/:item', (req, res) => {
+  User.findOne({_id: req.params.user}, (error, userData) => {
+    userData.cart.id(req.params.item).remove()
+    userData.save((error, newUser) => res.json(newUser))
+  })
+})
 
 //___________________
 //Listener
