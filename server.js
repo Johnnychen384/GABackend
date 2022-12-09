@@ -116,9 +116,56 @@ app.delete('/delete/:user/:item', (req, res) => {
   })
 })
 
-app.put('/edit/:user/:item', (req, res) => {
+// route for when user in the cart changes from 1 of an item to two or more. User will pass a new object called item into the params which is from a state that holds all our preferred items. 
+app.put('/edit/:user/:number/:name/:item', (req, res) => {
+  
+  // numberOFItem is how many the user wants of that clothes.
+  let numberOfItem = req.params.number
+  let nameOfItem = req.params.name
   User.findOne({_id: req.params.user}, (error, userData) => {
-    
+    let cartArray = userData.cart
+
+    // how many of the item we are looking for exist in the cart
+    let count = 0
+
+    // array to hold all the objects that match the name of the item we are looking for.
+    let temp = []
+
+    // goes through the cart array and checks the name property of each object
+    for(let elem of cartArray){
+      // if name of object is equal to the item we want to increase/decrease increment count
+      if(elem[name] === nameOfItem){
+        count++
+        temp.push(elem)
+      }
+    }
+
+    // if count which is how many of that clothes we have in the cart is less than the numberOfItem which represents how much of that clothes we want to have than add one more to the cart.
+    if(count < numberOfItem){
+      Clothes.create(req.params.item, (error, newItem) => {
+        cartArray.push(newItem)
+        userData.save((error, data) => {
+          res.json(data)
+        })
+      })
+
+
+    } else if (count > numberOfItem){
+      // how many items we want to remove
+      let different = count - numberOfItem
+      
+      // loops through the temp array which contains only items with the same name
+      for(let i = different; i > 0; i--){
+        // removes each item from cart.
+        cartArray.id(temp[i]._id).remove()
+        // saves
+        userData.save((error, newUser) => res.json(newUser))
+      }
+
+
+    }
+
+
   })
 })
 
