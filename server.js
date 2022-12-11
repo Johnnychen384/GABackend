@@ -91,9 +91,9 @@ app.post('/login', (req, res) => {
 })
 
 
-// Test route for postman to see all data
+// get all clothes route
 app.get('/', (req, res) => {
-  User.find({}, (error, data) => {
+  Clothes.find({}, (error, data) => {
     res.json(data)
   })
 })
@@ -175,14 +175,7 @@ const getData = async () => {
   const options = {
     method: 'GET',
     url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list',
-    params: {
-      country: 'us',
-      lang: 'en',
-      currentpage: '0',
-      pagesize: '30',
-      categories: 'men_all',
-      concepts: 'H&M MAN'
-    },
+    params: {country: 'us', lang: 'en', currentpage: '0', pagesize: '30'},
     headers: {
       'X-RapidAPI-Key': '18198b9e6fmsh35966d93fe90053p1badeejsn680060b71161',
       'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
@@ -191,14 +184,11 @@ const getData = async () => {
 
   const res = await axios.request(options)
   const data = await res.data
-  const arr = data.results.filter(item => item.categoryName === "Men" || item.categoryName === "Women")
-  console.log("Hi")
-  console.log(arr)
-  Clothes.create(data.results, (error, items) => {
+  const arr = data.results.filter(item => item.categoryName === "Men" || item.categoryName === "Ladies")
+  Clothes.create(arr, (error, items) => {
     console.log(items)
   })
 }
-
 
 app.get('/seed', (req, res) => {
   getData()
