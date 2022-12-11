@@ -5,11 +5,18 @@ const userSchema = new mongoose.Schema({
     email: String,
     name: String,
     password: String,
-    gender: String,
+    gender: {type: String, default: "Men"},
     preference: {
-        clothing: {type: String},
-        color: {type: String},
-        price: {type: String}
+        pricerange: {type: String},
+        colors: {type: String},
+        shortsleeves: {type: String},
+        longsleeves: {type: String},
+        topsize: {type: String},
+        pants: {type: String},
+        shorts: {type: String},
+        skirts: {type: String},
+        bottomssize: {type: String},
+        genderclothing: {type: String}
     },
     cart: [Clothes.schema]
 })
