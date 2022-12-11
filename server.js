@@ -169,6 +169,44 @@ app.post('/edit/:user/:name/:number', (req, res) => {
   })
 })
 
+
+// seed route
+const getData = async () => {
+  const options = {
+    method: 'GET',
+    url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list',
+    params: {
+      country: 'us',
+      lang: 'en',
+      currentpage: '0',
+      pagesize: '30',
+      categories: 'men_all',
+      concepts: 'H&M MAN'
+    },
+    headers: {
+      'X-RapidAPI-Key': '18198b9e6fmsh35966d93fe90053p1badeejsn680060b71161',
+      'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
+    }
+  }
+
+  const res = await axios.request(options)
+  const data = await res.data
+  const arr = data.results.filter(item => item.categoryName === "Men" || item.categoryName === "Women")
+  console.log("Hi")
+  console.log(arr)
+  Clothes.create(data.results, (error, items) => {
+    console.log(items)
+  })
+}
+
+
+app.get('/seed', (req, res) => {
+  getData()
+})
+
+
+
+
 //___________________
 //Listener
 //___________________
