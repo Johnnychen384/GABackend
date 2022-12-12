@@ -177,7 +177,7 @@ const getData = async () => {
     url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list',
     params: {country: 'us', lang: 'en', currentpage: '0', pagesize: '30'},
     headers: {
-      'X-RapidAPI-Key': '18198b9e6fmsh35966d93fe90053p1badeejsn680060b71161',
+      'X-RapidAPI-Key': APIKEY,
       'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
     }
   }
