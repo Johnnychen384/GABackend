@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
     email: String,
     name: String,
     password: String,
-    gender: {type: String, default: "Men"},
     preference: {
         pricerange: {type: String},
         colors: {type: String},
