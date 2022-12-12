@@ -101,7 +101,7 @@ app.get('/', (req, res) => {
 // add item to cart route
 app.post('/add/:user/:id', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
-    Clothes.find({_id: req.params.id}, (error, newItem) => {
+    Clothes.findById(req.params.id, (error, newItem) => {
       userData.cart.push(newItem)
       userData.save((error, data) => {
         res.json(data)
