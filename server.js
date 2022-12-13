@@ -99,6 +99,7 @@ app.get('/', (req, res) => {
 })
 
 // updates the selected color for item to add to cart
+// TODO: can update quantity/counter as well
 app.put('/color/:id', (req, res) => {
   Clothes.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedData) => {
     res.json(updatedData)
@@ -169,10 +170,7 @@ app.post('/edit/:user/:name/:number', (req, res) => {
         // saves
         userData.save((error, newUser) => res.json(newUser))
       }
-
     }
-
-
   })
 })
 

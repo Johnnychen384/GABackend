@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
         bottomssize: {type: String},
         genderclothing: {type: String}
     },
-    cart: [Clothes.schema]
+    cart: [Clothes.schema],
+
 })
 
 const Users = mongoose.model('user', userSchema)
