@@ -98,6 +98,13 @@ app.get('/', (req, res) => {
   })
 })
 
+// updates the selected color for item to add to cart
+app.put('/color/:id', (req, res) => {
+  Clothes.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedData) => {
+    res.json(updatedData)
+  })
+})
+
 // add item to cart route
 app.post('/add/:user/:id', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
