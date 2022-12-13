@@ -99,7 +99,6 @@ app.get('/', (req, res) => {
 })
 
 // updates the selected color for item to add to cart
-// TODO: can update quantity/counter as well
 app.put('/color/:id', (req, res) => {
   Clothes.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedData) => {
     res.json(updatedData)
@@ -118,6 +117,14 @@ app.put('/add/:user/:id', (req, res) => {
   })
 })
 
+// update cart to empty
+app.put('/clear/:user', (req, res) => {
+  User.updateOne({_id: req.params.user}, { $set: { cart: [] }}, (error, userData) => {
+    res.json(userData)
+  })
+})
+
+
 
 // delete route
 app.delete('/delete/:user/:id', (req, res) => {
@@ -126,6 +133,7 @@ app.delete('/delete/:user/:id', (req, res) => {
     userData.save((error, newUser) => res.json(newUser))
   })
 })
+
 
 // route for when user in the cart changes from 1 of an item to two or more. User will pass a new object called item into the params which is from a state that holds all our preferred items. 
 app.post('/edit/:user/:name/:number', (req, res) => {
@@ -170,7 +178,10 @@ app.post('/edit/:user/:name/:number', (req, res) => {
         // saves
         userData.save((error, newUser) => res.json(newUser))
       }
+
     }
+
+
   })
 })
 
