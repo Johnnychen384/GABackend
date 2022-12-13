@@ -15,7 +15,7 @@ const clothingSchema = new mongoose.Schema ({
     rgbColors: [String],
     categoryName: String,
     articleColorNames: [String],
-
+    selectedColor: {type: String, default: "None"}
 })
 
 
