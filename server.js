@@ -98,10 +98,18 @@ app.get('/', (req, res) => {
   })
 })
 
+// updates the selected color for item to add to cart
+// TODO: can update quantity/counter as well
+app.put('/color/:id', (req, res) => {
+  Clothes.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedData) => {
+    res.json(updatedData)
+  })
+})
+
 // add item to cart route
-app.post('/add/:user/:id', (req, res) => {
+app.put('/add/:user/:id', (req, res) => {
   User.findOne({_id: req.params.user}, (error, userData) => {
-    Clothes.find({_id: req.params.id}, (error, newItem) => {
+    Clothes.findById(req.params.id, (error, newItem) => {
       userData.cart.push(newItem)
       userData.save((error, data) => {
         res.json(data)
@@ -162,10 +170,7 @@ app.post('/edit/:user/:name/:number', (req, res) => {
         // saves
         userData.save((error, newUser) => res.json(newUser))
       }
-
     }
-
-
   })
 })
 
@@ -177,7 +182,7 @@ const getData = async () => {
     url: 'https://apidojo-hm-hennes-mauritz-v1.p.rapidapi.com/products/list',
     params: {country: 'us', lang: 'en', currentpage: '0', pagesize: '30'},
     headers: {
-      'X-RapidAPI-Key': '18198b9e6fmsh35966d93fe90053p1badeejsn680060b71161',
+      'X-RapidAPI-Key': APIKEY,
       'X-RapidAPI-Host': 'apidojo-hm-hennes-mauritz-v1.p.rapidapi.com'
     }
   }
