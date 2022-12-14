@@ -100,10 +100,20 @@ app.get('/', (req, res) => {
 
 // updates the selected color for item to add to cart
 // need to pass in user id and clothing id, as well as the item to be updated
-app.put('/color/:user/:id', (req, res) => {
+app.put('/adjustPlus/:user/:id', (req, res) => {
   User.findById(req.params.user, (error, userData) => {
     console.log("Updated Data: " + userData)
     userData.cart.id(req.params.id).counter += 1
+    userData.save((error, data) => {
+      res.json(data)
+    })
+  })
+})
+
+app.put('/adjustSub/:user/:id', (req, res) => {
+  User.findById(req.params.user, (error, userData) => {
+    console.log("Updated Data: " + userData)
+    userData.cart.id(req.params.id).counter -= 1
     userData.save((error, data) => {
       res.json(data)
     })
