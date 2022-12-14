@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
         bottomssize: {type: String},
         genderclothing: {type: String}
     },
-    cart: [Clothes.schema],
+    cart: [Clothes.schema]
 
 })
 
